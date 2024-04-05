@@ -4,10 +4,11 @@ const asyncHandler = require('express-async-handler')
 const User = require('../models/userModel')
 const { user } = require('../routes/userRoutes')
 
-
+// post /api/users/register
 const registerUser = asyncHandler(async (req,res) => {
+    console.log("got it");
     const { name,email,password } = req.body;
-
+    console.log(name,email,password);
     if(!name || !email || !password){
         res.status(400)
         throw new Error('Please add all fields')
@@ -45,6 +46,7 @@ const registerUser = asyncHandler(async (req,res) => {
     }
 })
 
+// post /api/users/login
 const loginUser = asyncHandler(async (req,res) => {
     const {email,password} = req.body;
     
@@ -65,13 +67,15 @@ const loginUser = asyncHandler(async (req,res) => {
 })
 
 const getMe = asyncHandler(async (req,res) => {
-   const {_id, name, email} = await User.findById(req.user.id)
-
-   res.status(200).json({
-    id: _id,
-    name,
-    email,
-   })
+    const { email,name } = req.body
+    console.log(email,name);
+    const user = await User.findById(req.params.id)
+    console.log("token", req.token);
+    if(!user){
+        res.status(400).json({message: 'User not found'})
+    }
+    const updateUser = await User.findByIdAndUpdate(req.params.id , req.body)
+    res.status(200).json(updateUser)
 })
 
 const generateToken = (id) => {
