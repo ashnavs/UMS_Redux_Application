@@ -44,11 +44,13 @@ const initialState = {
 }) 
 
 //update user
-export const updateProfile = createAsyncThunk('auth/me',  async ({userId, user},thunkAPI) => { 
+export const updateProfile = createAsyncThunk('auth/me',  async (userData,thunkAPI) => { 
     try {
+      console.log('inside update profile slice')
         const token = thunkAPI.getState().auth.user.token
-        console.log("001",userId,user,token);
-        return await authService.updateProfile(userId,user,token)
+      
+        const response = await authService.updateProfile(userData,token)
+        return {...response,token}
     } catch (error) {
         console.log(error);
         console.log("abcccc");
@@ -56,17 +58,7 @@ export const updateProfile = createAsyncThunk('auth/me',  async ({userId, user},
         return thunkAPI.rejectWithValue(message)
     }
 })
-// export const updateProfile = createAsyncThunk('auth/me',  async ({userId, user}, thunkAPI) => { 
-//   try {
-//       const token = thunkAPI.getState().auth.user.token; // Retrieve token from Redux state
-//       const response = await authService.updateProfile(userId, user, token); // Pass token to API request
-//       return response.data; // Assuming response.data contains updated user data
-//   } catch (error) {
-//       console.log("Error updating profile:", error);
-//       const message = (error.response && error.response.data && error.response.data.message) || error.message || error.toString();
-//       return thunkAPI.rejectWithValue(message);
-//   }
-// });
+
 
 
 export const authSlice = createSlice({

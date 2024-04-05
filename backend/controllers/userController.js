@@ -69,13 +69,24 @@ const loginUser = asyncHandler(async (req,res) => {
 const getMe = asyncHandler(async (req,res) => {
     const { email,name } = req.body
     console.log(email,name);
-    const user = await User.findById(req.params.id)
-    console.log("token", req.token);
+    const user = await User.findById(req.user.id)
+    console.log('inside backend')
+    console.log(user)
+    // console.log("token", req.token);
     if(!user){
         res.status(400).json({message: 'User not found'})
     }
-    const updateUser = await User.findByIdAndUpdate(req.params.id , req.body)
-    res.status(200).json(updateUser)
+    user.name = name || user.name
+    user.email = email || user.email
+    const updateUser = await user.save()
+    console.log('update user')
+    console.log(updateUser)
+    // const updateUser = await User.findByIdAndUpdate(req.params.id , req.body)
+    res.status(200).json({
+        _id:updateUser.id,
+        name:updateUser.name,
+        email:updateUser.email,
+    })
 })
 
 const generateToken = (id) => {

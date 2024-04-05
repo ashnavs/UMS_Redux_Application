@@ -51,7 +51,7 @@ function UserProfile() {
             return;
         }
 
-        dispatch(updateProfile({ userId: user._id, user: formData }));
+        dispatch(updateProfile(formData));
     };
 
     const validateForm = () => {

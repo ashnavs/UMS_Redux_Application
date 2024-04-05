@@ -6,6 +6,7 @@ import Header from './components/Header';
 import Login from './pages/Login';
 import Register from './pages/Register';
 import UserProfile from './pages/UserProfile';
+import AdminLogin from './pages/admin/AdminLogin';
 
 
 
@@ -21,7 +22,7 @@ function App() {
         <Route path='/login' element={<Login />}/>
         <Route path='/register' element={<Register />}/>
         <Route path='/profile' element={<UserProfile />}/>
-
+        <Route path='/admin/login' element={<AdminLogin/>}/>
       </Routes>
     </div>
     </Router>
