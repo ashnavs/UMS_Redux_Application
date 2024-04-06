@@ -1,53 +1,55 @@
-import { useState, useEffect } from "react"
-import { FaSignInAlt } from "react-icons/fa"
-import { UseSelector, useDispatch, useSelector } from "react-redux"
-import { useNavigate } from "react-router-dom"
+import { useEffect, useState } from "react";
+import { loginAdmin } from "../../features/adminAuth/adminAuthSlice";
+import { FaSignInAlt, FaUser } from "react-icons/fa"
+import { useDispatch, useSelector } from "react-redux";
 import { toast } from 'react-toastify'
-import { adminlogin,reset } from "../../features/adminAuth/authadminSlice"
+import { useNavigate } from 'react-router-dom'
 import Spinner from "../../components/Spinner"
-// import './pageStyle.css';
 
 function AdminLogin() {
-    const [formData, setFormdata] = useState({
+    const [adminformData, setAdminformdata] = useState({
+
         email: '',
         password: '',
 
     })
 
-    const [errors,setErrors] = useState({})
+    const [errors, setErrors] = useState({})
 
-    const { email, password } = formData
-
-    const navigate = useNavigate()
     const dispatch = useDispatch()
+    const navigate = useNavigate()
 
-    const { admin, isLoading, isError, isSuccess, message } = useSelector((state) => state.auth)
+    const { email, password, } = adminformData
+
+    const { admin, isLoading, isError, isSuccess, message } = useSelector((state) => state.adminAuth)
+
 
     useEffect(() => {
         if (isError) {
             toast.error(message)
         }
         if (isSuccess || admin) {
-            navigate('/')
+            navigate('/admin/dashboard')
         }
-
-        dispatch(reset())
-    }, [admin, isError, isSuccess, message, navigate, dispatch])
+        if(isLoading){
+            <Spinner />
+        }
+    },[admin, isError, isSuccess, message , navigate, dispatch])
 
     const onChange = (e) => {
-        setFormdata((prevState) => ({
+        setAdminformdata((prevState) => ({
             ...prevState,
             [e.target.name]: e.target.value,
         }))
     }
 
     const onSubmit = (e) => {
-        e.preventDefault()
+        e.preventDefault();
 
         let validationErrors = {};
 
         //email validation
-        if(!email || !/^\S+@\S+\.\S+$/.test(email)){
+        if (!email || !/^\S+@\S+\.\S+$/.test(email)) {
             validationErrors.email = 'Please enter a valid email address';
         }
 
@@ -61,46 +63,45 @@ function AdminLogin() {
             return;
         }
 
+
         const adminData = {
             email,
             password
         }
-        dispatch(adminlogin(adminData))
-    }
 
-    if (isLoading) {
-        return <Spinner />
+        dispatch(loginAdmin(adminData))
     }
     return (
         <>
 
             <section className="heading">
                 <h1>
-                    <FaSignInAlt />Login
+                    <FaUser /> Register Admin
                 </h1>
-                <p>Login Admin</p>
+                <p>Please create an account</p>
             </section>
 
             <section className="form">
                 <form onSubmit={onSubmit}>
-
                     <div className="form-group">
-                        <input type="email" className="form-control"
+                        <input type="text"
+                            className={`form-control ${errors.email ? 'is-invalid' : ''}`}
                             id="email"
                             name="email"
                             value={email}
                             placeholder="Enter your email"
                             onChange={onChange} />
-                            {errors.email&& <div className="error-message">{errors.email}</div>}
+                        {errors.email && <div className="invalid-feedback">{errors.email}</div>}
                     </div>
                     <div className="form-group">
-                        <input type="password" className="form-control"
+                        <input type="text"
+                            className={`form-control ${errors.password ? 'is-invalid' : ''}`}
                             id="password"
                             name="password"
                             value={password}
                             placeholder="Enter password"
                             onChange={onChange} />
-                            {errors.password&&<div className="error-message">{errors.password}</div>}
+                        {errors.password && <div className="invalid-feedback">{errors.password}</div>}
                     </div>
 
                     <div className="form-group">
@@ -114,4 +115,3 @@ function AdminLogin() {
 }
 
 export default AdminLogin
-
