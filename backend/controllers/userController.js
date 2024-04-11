@@ -54,10 +54,15 @@ const loginUser = asyncHandler(async (req,res) => {
     const user = await User.findOne({email})
 
     if(user && (await bcrypt.compare(password, user.password))){
+
+        if(user.isBlocked === true){
+            res.status(403).json({ message: "User is blocked." });
+        }
         res.json({
             _id: user.id,
             name: user.name,
             email: user.email,
+            profileURL: user.profileURL,
             token: generateToken(user._id)
         })
     }else{
@@ -96,8 +101,26 @@ const generateToken = (id) => {
 }
 
 
+//image uploading
+const uploadProfile = asyncHandler(async(req,res)=>{
+    const imgUrl = req.body.imgUrl;
+    console.log(imgUrl);
+    try {
+        const user = await User.findByIdAndUpdate(req.user.id,
+        {profileURL : req.body.imgUrl},
+            {new:true}
+    )
+    res.json(user)
+    } catch (error) {
+        console.error("Error updating user profile:", error);
+        res.status(500).json({ error: 'Internal Server Error' });
+    }
+})
+
+
 module.exports = {
     registerUser,
     loginUser,
-    getMe
+    getMe,
+    uploadProfile
 }

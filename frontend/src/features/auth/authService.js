@@ -53,12 +53,33 @@ const logout = () => {
     localStorage.removeItem('user')
 }
 
+//profile upload
+const profileUpload = async(token,imgUrl)=>{
+    const config = {
+        headers:{
+            Authorization: `Bearer ${token}`
+        }
+    }
+    const currentUser = JSON.parse(localStorage.getItem('user'))
+    console.log("call 3", token, imgUrl, currentUser);
+    const response = await axios.post(API_URL+ 'upload', {imgUrl,currentUser}, config)
+
+    const localuser = localStorage.getItem('user')
+
+    if(localuser){
+        const user = JSON.parse(localuser)
+        user.profileUrl = response.data.profileURL;
+        localStorage.setItem('user',JSON.stringify(user))
+    }
+    return response.data
+}
+
 const authService = {
     register,
     logout,
     login,
     updateProfile,
-  
+    profileUpload
 }
 
 export default authService

@@ -9,6 +9,9 @@ import UserProfile from './pages/UserProfile';
 import AdminLogin from './pages/admin/AdminLogin';
 import AdminDashboard from './pages/admin/AdminDashboard';
 import AdminHeader from './components/AdminHeader';
+import Profile from './pages/Profile';
+import AddUser from './components/admin/AddUser';
+import UserLists from './components/admin/UserLists';
 
 
 function App() {
@@ -27,15 +30,22 @@ function App() {
 
             <Route path='/admin/login' element={<AdminLogin />} />
             <Route path='/admin/dashboard' element={<AdminDashboard />} />
+            <Route path='/admin/userlist' element={<UserLists />} />
+            <Route path='/admin/addUser' element={<AddUser />} />
 
 
-          {/* </Routes>
+
+            {/* </Routes>
 
           <Routes> */}
+
+
             <Route path='/' element={<Dashboard />} />
             <Route path='/login' element={<Login />} />
             <Route path='/register' element={<Register />} />
             <Route path='/profile' element={<UserProfile />} />
+            <Route path='/upload' element={< Profile />} />
+
 
 
 
