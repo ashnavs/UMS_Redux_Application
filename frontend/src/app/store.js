@@ -6,10 +6,12 @@ import adminReducer from '../features/adminAuth/adminAuthSlice'
 
 
 
+
 export const store = configureStore({
   reducer: {
     auth: authReducer,
     goals: goalReducer,
-    adminAuth: adminReducer
+    adminAuth: adminReducer,
+    
   },
 });

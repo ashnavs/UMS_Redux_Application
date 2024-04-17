@@ -10,7 +10,7 @@ router.post('/register',registerAdmin)
 router.post('/login',adminLogin)
 router.get('/getUserData',getUserData)
 router.post('/userBlock',userBlock)
-router.post('/editUser',adminAuth,updateUser)
+router.post('/editUser',updateUser)
 router.post('/addUser',addUser)
 
 

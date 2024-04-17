@@ -76,7 +76,6 @@ const generateToken = (id) => {
 const getUserData = asyncHandler(async (req,res)=>{
     console.log("hello");
     const userData = await User.find()
-    console.log(userData );
     if(userData){
         res.status(200).json(userData)
     }else{

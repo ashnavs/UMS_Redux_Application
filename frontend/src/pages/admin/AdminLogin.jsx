@@ -76,7 +76,7 @@ function AdminLogin() {
 
             <section className="heading">
                 <h1>
-                    <FaUser /> Register Admin
+                    <FaUser /> Admin Login
                 </h1>
                 <p>Please create an account</p>
             </section>

@@ -41,6 +41,7 @@ export const blockUser = async(token , userId) => {
 }
 
 export const editUser = async(token, userId, name, email)=>{
+    console.log("inside servioce", userId, name, email);
     const config = {
         headers: {
             Authorization : `bearer ${token}`

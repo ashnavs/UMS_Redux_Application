@@ -60,6 +60,7 @@ export const blockUser = createAsyncThunk('adminAuth/userBlock', async (userId, 
 
 export const editUser = createAsyncThunk('adminAuth/editUser', async ({ userId, name, email }, thunkAPI) => {
     try {
+        console.log("inside slice",userId, name, email);
         const token = thunkAPI.getState().adminAuth.admin.token;
         const response = await adminAuthService.editUser(token, userId, name, email);
         return response.data;

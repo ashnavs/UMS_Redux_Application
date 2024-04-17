@@ -9,9 +9,9 @@ import UserProfile from './pages/UserProfile';
 import AdminLogin from './pages/admin/AdminLogin';
 import AdminDashboard from './pages/admin/AdminDashboard';
 import AdminHeader from './components/AdminHeader';
-import Profile from './pages/Profile';
 import AddUser from './components/admin/AddUser';
 import UserLists from './components/admin/UserLists';
+import FetchUser from './pages/FetchUser';
 
 
 function App() {
@@ -44,7 +44,9 @@ function App() {
             <Route path='/login' element={<Login />} />
             <Route path='/register' element={<Register />} />
             <Route path='/profile' element={<UserProfile />} />
-            <Route path='/upload' element={< Profile />} />
+            <Route path='/fetch' element={<FetchUser />} />
+
+
 
 
 

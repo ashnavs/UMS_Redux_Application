@@ -44,34 +44,57 @@ export const login = createAsyncThunk('auth/login', async (user, thunkAPI) => {
 })
 
 //update user
-export const updateProfile = createAsyncThunk('auth/me', async (userData, thunkAPI) => {
-  try {
-    console.log('inside update profile slice')
-    const token = thunkAPI.getState().auth.user.token
+// export const updateProfile = createAsyncThunk('auth/me', async (userData, thunkAPI) => {
+//   try {
+//     console.log('inside update profile slice')
+//     const token = thunkAPI.getState().auth.user.token
 
-    const response = await authService.updateProfile(userData, token)
-    return { ...response, token }
-  } catch (error) {
-    console.log(error);
-    console.log("abcccc");
-    const message = (error.response && error.response.data && error.response.data.message) || error.message || error.toString()
-    return thunkAPI.rejectWithValue(message)
+//     const response = await authService.updateProfile(userData, token)
+//     return { ...response, token }
+//   } catch (error) {
+//     console.log(error);
+//     console.log("abcccc");
+//     const message = (error.response && error.response.data && error.response.data.message) || error.message || error.toString()
+//     return thunkAPI.rejectWithValue(message)
+//   }
+// })
+export const updateProfile = createAsyncThunk(
+  "auth/me",
+  async (userData, thunkAPI) => {
+    try {
+      console.log("inside update profile slice" + userData);
+      const token = thunkAPI.getState().auth.user.token;
+
+      const response = await authService.updateProfile(userData, token);
+      
+      console.log("blah",response);
+      return { ...response, token };
+    } catch (error) {
+      console.log(error);
+      console.log("abcccc");
+      const message =
+        (error.response &&
+          error.response.data &&
+          error.response.data.message) ||
+        error.message ||
+        error.toString();
+      return thunkAPI.rejectWithValue(message);
+    }
   }
-})
-
+);
 //image uploading
-export const profileUpdate = createAsyncThunk('auth/upload', async (imgUrl, thunkAPI) => {
-  try {
-    const token = thunkAPI.getState().auth.user.token;
-    console.log("call 2", imgUrl, token );
-    return await authService.profileUpload(token, imgUrl)
-  } catch (error) {
-    const message = (error.response && error.response.data && error.response.data.message) ||
-      error.message ||
-      error.toString()
-    return thunkAPI.rejectWithValue(message)
-  }
-})
+// export const profileUpdate = createAsyncThunk('auth/upload', async (imgUrl, thunkAPI) => {
+//   try {
+//     const token = thunkAPI.getState().auth.user.token;
+//     console.log("call 2", imgUrl, token );
+//     return await authService.profileUpload(token, imgUrl)
+//   } catch (error) {
+//     const message = (error.response && error.response.data && error.response.data.message) ||
+//       error.message ||
+//       error.toString()
+//     return thunkAPI.rejectWithValue(message)
+//   }
+// })
 
 
 
@@ -137,25 +160,25 @@ export const authSlice = createSlice({
         state.user = null
       })
       //
-      .addCase(profileUpdate.pending, (state) => {
-        state.isLoading = true
-      })
-      .addCase(profileUpdate.fulfilled, (state, action) => {
-        state.isLoading = false
-        state.isSuccess = true
-        state.user = {
-          ...state.user,
-          profileUrl: action.payload.profileUrl
-        }
-      })
+      // .addCase(profileUpdate.pending, (state) => {
+      //   state.isLoading = true
+      // })
+      // .addCase(profileUpdate.fulfilled, (state, action) => {
+      //   state.isLoading = false
+      //   state.isSuccess = true
+      //   state.user = {
+      //     ...state.user,
+      //     profileUrl: action.payload.profileUrl
+      //   }
+      // })
      
     
-      .addCase(profileUpdate.rejected, (state, action) => {
-        state.isLoading = false
-        state.isError = true
-        state.message = action.payload
+      // .addCase(profileUpdate.rejected, (state, action) => {
+      //   state.isLoading = false
+      //   state.isError = true
+      //   state.message = action.payload
      
-      })
+      // })
   },
 })
 

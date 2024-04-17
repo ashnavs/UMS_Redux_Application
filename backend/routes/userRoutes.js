@@ -8,7 +8,7 @@ const {protect} = require('../middleware/authMiddleware')
 router.post('/', registerUser)
 router.post('/login', loginUser)
 router.put('/me', protect,getMe)
-router.post('/upload',protect,uploadProfile)
+// router.post('/upload',protect,uploadProfile)
 
 
 

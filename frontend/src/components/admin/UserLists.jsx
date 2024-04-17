@@ -45,7 +45,7 @@ function UserLists() {
   const handleEdit = (userId, name, email) => {
     const newName = prompt('Enter your New name:',name);
     const newEmail = prompt('Enter your new Email',email);
-
+    console.log("vsdgfs",newName, newEmail);
     if(newName === null || newEmail === null){
       return;
     }

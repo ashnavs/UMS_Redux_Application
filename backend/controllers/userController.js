@@ -71,28 +71,56 @@ const loginUser = asyncHandler(async (req,res) => {
     }
 })
 
-const getMe = asyncHandler(async (req,res) => {
-    const { email,name } = req.body
-    console.log(email,name);
-    const user = await User.findById(req.user.id)
-    console.log('inside backend')
-    console.log(user)
-    // console.log("token", req.token);
-    if(!user){
-        res.status(400).json({message: 'User not found'})
+// const getMe = asyncHandler(async (req,res) => {
+//     const { email,name } = req.body
+//     console.log(email,name);
+//     const user = await User.findById(req.user.id)
+//     console.log('inside backend')
+//     console.log(user)
+//     // console.log("token", req.token);
+//     if(!user){
+//         res.status(400).json({message: 'User not found'})
+//     }
+//     user.name = name || user.name
+//     user.email = email || user.email
+//     const updateUser = await user.save()
+//     console.log('update user')
+//     console.log(updateUser)
+//     // const updateUser = await User.findByIdAndUpdate(req.params.id , req.body)
+//     res.status(200).json({
+//         _id:updateUser.id,
+//         name:updateUser.name,
+//         email:updateUser.email,
+//     })
+// })
+
+const getMe = asyncHandler(async (req, res) => {
+    const { email, name, image } = req.body; 
+
+    // Find the user by ID
+    const user = await User.findById(req.user.id);
+
+    // Check if the user exists
+    if (!user) {
+        return res.status(400).json({ message: 'User not found' });
     }
-    user.name = name || user.name
-    user.email = email || user.email
-    const updateUser = await user.save()
-    console.log('update user')
-    console.log(updateUser)
-    // const updateUser = await User.findByIdAndUpdate(req.params.id , req.body)
+
+    // Update user fields if provided in the request body
+    if (name) user.name = name;
+    if (email) user.email = email;
+    if (image) user.profileURL = image;
+
+    // Save the updated user object
+    const updatedUser = await user.save();
+    console.log("kdfghsjdgfs",updatedUser);
+    // Return the updated user object in the response
     res.status(200).json({
-        _id:updateUser.id,
-        name:updateUser.name,
-        email:updateUser.email,
-    })
-})
+        _id: updatedUser.id,
+        name: updatedUser.name,
+        email: updatedUser.email,
+        profileURL: updatedUser.profileURL, // Updated profile URL
+    });
+});
 
 const generateToken = (id) => {
     return jwt.sign({ id},process.env.JWT_SECRET,{
@@ -102,25 +130,25 @@ const generateToken = (id) => {
 
 
 //image uploading
-const uploadProfile = asyncHandler(async(req,res)=>{
-    const imgUrl = req.body.imgUrl;
-    console.log(imgUrl);
-    try {
-        const user = await User.findByIdAndUpdate(req.user.id,
-        {profileURL : req.body.imgUrl},
-            {new:true}
-    )
-    res.json(user)
-    } catch (error) {
-        console.error("Error updating user profile:", error);
-        res.status(500).json({ error: 'Internal Server Error' });
-    }
-})
+// const uploadProfile = asyncHandler(async(req,res)=>{
+//     const imgUrl = req.body.imgUrl;
+//     console.log(imgUrl);
+//     try {
+//         const user = await User.findByIdAndUpdate(req.user.id,
+//         {profileURL : req.body.imgUrl},
+//             {new:true}
+//     )
+//     res.json(user)
+//     } catch (error) {
+//         console.error("Error updating user profile:", error);
+//         res.status(500).json({ error: 'Internal Server Error' });
+//     }
+// })
 
 
 module.exports = {
     registerUser,
     loginUser,
     getMe,
-    uploadProfile
+    // uploadProfile
 }
